@@ -1,0 +1,595 @@
+basePath: /
+definitions:
+  github_com_rogerwesterbo_familytree_pkg_interfaces.Person:
+    properties:
+      _id:
+        type: string
+      _key:
+        type: string
+      _rev:
+        type: string
+      birthDate:
+        type: string
+      createdAt:
+        type: string
+      deathDate:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      gender:
+        type: string
+      lastName:
+        type: string
+      phone:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - firstName
+    - lastName
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest:
+    properties:
+      birthDate:
+        example: "1980-01-15T00:00:00Z"
+        type: string
+      deathDate:
+        example: "2050-05-20T00:00:00Z"
+        type: string
+      email:
+        example: john.doe@example.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      gender:
+        example: male
+        type: string
+      lastName:
+        example: Doe
+        type: string
+      phone:
+        example: "+1234567890"
+        type: string
+    required:
+    - firstName
+    - lastName
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse:
+    properties:
+      message:
+        type: string
+      person:
+        $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person'
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest:
+    properties:
+      birthDate:
+        example: "1980-01-15T00:00:00Z"
+        type: string
+      deathDate:
+        example: "2050-05-20T00:00:00Z"
+        type: string
+      email:
+        example: john.doe@example.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      gender:
+        example: male
+        type: string
+      lastName:
+        example: Doe
+        type: string
+      phone:
+        example: "+1234567890"
+        type: string
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse:
+    properties:
+      count:
+        type: integer
+      persons:
+        items:
+          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person'
+        type: array
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship:
+    properties:
+      _from:
+        type: string
+      _id:
+        type: string
+      _key:
+        type: string
+      _rev:
+        type: string
+      _to:
+        type: string
+      createdAt:
+        type: string
+      endDate:
+        type: string
+      notes:
+        type: string
+      relationType:
+        type: string
+      startDate:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - _from
+    - _to
+    - relationType
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest:
+    properties:
+      endDate:
+        example: "2020-12-31T00:00:00Z"
+        type: string
+      from:
+        example: persons/123
+        type: string
+      notes:
+        example: Biological parent
+        type: string
+      relationType:
+        example: parent
+        type: string
+      startDate:
+        example: "2000-01-01T00:00:00Z"
+        type: string
+      to:
+        example: persons/456
+        type: string
+    required:
+    - from
+    - relationType
+    - to
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse:
+    properties:
+      message:
+        type: string
+      relationship:
+        $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship'
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest:
+    properties:
+      endDate:
+        example: "2020-12-31T00:00:00Z"
+        type: string
+      from:
+        example: persons/123
+        type: string
+      notes:
+        example: Biological parent
+        type: string
+      relationType:
+        example: parent
+        type: string
+      startDate:
+        example: "2000-01-01T00:00:00Z"
+        type: string
+      to:
+        example: persons/456
+        type: string
+    type: object
+  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse:
+    properties:
+      count:
+        type: integer
+      relationships:
+        items:
+          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship'
+        type: array
+    type: object
+host: localhost:15000
+info:
+  contact:
+    email: support@example.com
+    name: FamilyTree Support
+    url: https://github.com/rogerwesterbo/familytree
+  description: |-
+    To get a token manually:
+    ```
+    curl -X POST 'http://localhost:15101/realms/familytree/protocol/openid-connect/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'client_id=familytree-cli' -d 'username=testuser' -d 'password=S3cr3t!' -d 'grant_type=password'
+    ```
+
+    Extract and use the access_token:
+    ```
+    TOKEN=$(curl -s -X POST 'http://localhost:15101/realms/familytree/protocol/openid-connect/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'client_id=familytree-cli' -d 'username=testuser' -d 'password=S3cr3t!' -d 'grant_type=password' | jq -r '.access_token')
+
+    curl -H "Authorization: Bearer $TOKEN" http://localhost:15000/v1/persons
+    ```
+  license:
+    name: Apache 2.0
+    url: https://github.com/rogerwesterbo/familytree/blob/main/LICENSE
+  title: FamilyTree API
+  version: "1.0"
+paths:
+  /v1/persons:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all persons in the family tree
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: List all persons
+      tags:
+      - persons
+    post:
+      consumes:
+      - application/json
+      description: Create a new person in the family tree
+      parameters:
+      - description: Person data
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Create a person
+      tags:
+      - persons
+  /v1/persons/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a person from the family tree
+      parameters:
+      - description: Person ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Delete a person
+      tags:
+      - persons
+    get:
+      consumes:
+      - application/json
+      description: Get a person by ID
+      parameters:
+      - description: Person ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Get a person
+      tags:
+      - persons
+    put:
+      consumes:
+      - application/json
+      description: Update an existing person in the family tree
+      parameters:
+      - description: Person ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Person data
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Update a person
+      tags:
+      - persons
+  /v1/relationships:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all relationships in the family tree
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: List all relationships
+      tags:
+      - relationships
+    post:
+      consumes:
+      - application/json
+      description: Create a new relationship in the family tree
+      parameters:
+      - description: Relationship data
+        in: body
+        name: relationship
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Create a relationship
+      tags:
+      - relationships
+  /v1/relationships/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a relationship from the family tree
+      parameters:
+      - description: Relationship ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Delete a relationship
+      tags:
+      - relationships
+    get:
+      consumes:
+      - application/json
+      description: Get a relationship by ID
+      parameters:
+      - description: Relationship ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Get a relationship
+      tags:
+      - relationships
+    put:
+      consumes:
+      - application/json
+      description: Update an existing relationship in the family tree
+      parameters:
+      - description: Relationship ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Relationship data
+        in: body
+        name: relationship
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      - OAuth2Password: []
+      summary: Update a relationship
+      tags:
+      - relationships
+produces:
+- application/json
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+  OAuth2Password:
+    flow: password
+    tokenUrl: http://localhost:15101/realms/familytree/protocol/openid-connect/token
+    type: oauth2
+swagger: "2.0"
+tags:
+- description: Operations related to persons in the family tree
+  name: Persons
+- description: Operations related to relationships between persons
+  name: Relationships

@@ -1,0 +1,902 @@
+{
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "To get a token manually:\n```\ncurl -X POST 'http://localhost:15101/realms/familytree/protocol/openid-connect/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'client_id=familytree-cli' -d 'username=testuser' -d 'password=S3cr3t!' -d 'grant_type=password'\n```\n\nExtract and use the access_token:\n```\nTOKEN=$(curl -s -X POST 'http://localhost:15101/realms/familytree/protocol/openid-connect/token' -H 'Content-Type: application/x-www-form-urlencoded' -d 'client_id=familytree-cli' -d 'username=testuser' -d 'password=S3cr3t!' -d 'grant_type=password' | jq -r '.access_token')\n\ncurl -H \"Authorization: Bearer $TOKEN\" http://localhost:15000/v1/persons\n```",
+        "title": "FamilyTree API",
+        "contact": {
+            "name": "FamilyTree Support",
+            "url": "https://github.com/rogerwesterbo/familytree",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://github.com/rogerwesterbo/familytree/blob/main/LICENSE"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:15000",
+    "basePath": "/",
+    "paths": {
+        "/v1/persons": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Get a list of all persons in the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "List all persons",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Create a new person in the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Create a person",
+                "parameters": [
+                    {
+                        "description": "Person data",
+                        "name": "person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/persons/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Get a person by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Get a person",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Update an existing person in the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Update a person",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Person data",
+                        "name": "person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Delete a person from the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Delete a person",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Person ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/relationships": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Get a list of all relationships in the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "List all relationships",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Create a new relationship in the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "Create a relationship",
+                "parameters": [
+                    {
+                        "description": "Relationship data",
+                        "name": "relationship",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/relationships/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Get a relationship by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "Get a relationship",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Relationship ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Update an existing relationship in the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "Update a relationship",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Relationship ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Relationship data",
+                        "name": "relationship",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "OAuth2Password": []
+                    }
+                ],
+                "description": "Delete a relationship from the family tree",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "relationships"
+                ],
+                "summary": "Delete a relationship",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Relationship ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.Person": {
+            "type": "object",
+            "required": [
+                "firstName",
+                "lastName"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "_key": {
+                    "type": "string"
+                },
+                "_rev": {
+                    "type": "string"
+                },
+                "birthDate": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deathDate": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest": {
+            "type": "object",
+            "required": [
+                "firstName",
+                "lastName"
+            ],
+            "properties": {
+                "birthDate": {
+                    "type": "string",
+                    "example": "1980-01-15T00:00:00Z"
+                },
+                "deathDate": {
+                    "type": "string",
+                    "example": "2050-05-20T00:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1234567890"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "person": {
+                    "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "birthDate": {
+                    "type": "string",
+                    "example": "1980-01-15T00:00:00Z"
+                },
+                "deathDate": {
+                    "type": "string",
+                    "example": "2050-05-20T00:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1234567890"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "persons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person"
+                    }
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship": {
+            "type": "object",
+            "required": [
+                "_from",
+                "_to",
+                "relationType"
+            ],
+            "properties": {
+                "_from": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "_key": {
+                    "type": "string"
+                },
+                "_rev": {
+                    "type": "string"
+                },
+                "_to": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "relationType": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest": {
+            "type": "object",
+            "required": [
+                "from",
+                "relationType",
+                "to"
+            ],
+            "properties": {
+                "endDate": {
+                    "type": "string",
+                    "example": "2020-12-31T00:00:00Z"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "persons/123"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Biological parent"
+                },
+                "relationType": {
+                    "type": "string",
+                    "example": "parent"
+                },
+                "startDate": {
+                    "type": "string",
+                    "example": "2000-01-01T00:00:00Z"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "persons/456"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "relationship": {
+                    "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "string",
+                    "example": "2020-12-31T00:00:00Z"
+                },
+                "from": {
+                    "type": "string",
+                    "example": "persons/123"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Biological parent"
+                },
+                "relationType": {
+                    "type": "string",
+                    "example": "parent"
+                },
+                "startDate": {
+                    "type": "string",
+                    "example": "2000-01-01T00:00:00Z"
+                },
+                "to": {
+                    "type": "string",
+                    "example": "persons/456"
+                }
+            }
+        },
+        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "relationships": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "OAuth2Password": {
+            "type": "oauth2",
+            "flow": "password",
+            "tokenUrl": "http://localhost:15101/realms/familytree/protocol/openid-connect/token"
+        }
+    },
+    "tags": [
+        {
+            "description": "Operations related to persons in the family tree",
+            "name": "Persons"
+        },
+        {
+            "description": "Operations related to relationships between persons",
+            "name": "Relationships"
+        }
+    ]
+}
