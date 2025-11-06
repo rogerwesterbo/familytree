@@ -137,12 +137,12 @@ jobs:
           NODE_ENV: production
 
       - name: Build Docker image
-        run: docker build -f Dockerfile -t familytreeapi:ci .
+        run: docker build -f Dockerfile -t familytreeweb:ci .
 
       - name: Test Docker image
         run: |
           # Start container
-          docker run -d --name familytreeapi-test -p 8080:8080 familytreeapi:ci
+          docker run -d --name familytreeweb-test -p 8080:8080 familytreeweb:ci
 
           # Wait for container to be ready
           sleep 5
