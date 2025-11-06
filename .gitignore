@@ -45,3 +45,5 @@ hack/data/postgres/*
 
 hack/data/arangodb/*
 !hack/data/arangodb/.gitkeep
+
+.DS_Store
