@@ -47,3 +47,4 @@ hack/data/arangodb/*
 !hack/data/arangodb/.gitkeep
 
 .DS_Store
+__debug_bin*

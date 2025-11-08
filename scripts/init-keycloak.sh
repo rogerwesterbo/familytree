@@ -201,13 +201,13 @@ WEB_CLIENT_JSON=$(cat <<EOF
     "directAccessGrantsEnabled": false,
     "implicitFlowEnabled": false,
     "serviceAccountsEnabled": false,
-    "redirectUris": ["http://localhost:14200/callback", "http://localhost:14200/*"],
-    "webOrigins": ["http://localhost:14200"],
-    "rootUrl": "http://localhost:14200",
-    "baseUrl": "http://localhost:14200",
+    "redirectUris": ["http://localhost:15200/callback", "http://localhost:15200/*"],
+    "webOrigins": ["http://localhost:15200"],
+    "rootUrl": "http://localhost:15200",
+    "baseUrl": "http://localhost:15200",
     "attributes": {
         "pkce.code.challenge.method": "S256",
-        "post.logout.redirect.uris": "http://localhost:14200",
+        "post.logout.redirect.uris": "http://localhost:15200",
         "access.token.lifespan": "3600"
     },
     "protocolMappers": [
@@ -293,11 +293,11 @@ fi
 
 # Create roles
 echo "🔧 Creating roles..."
-ROLES=("dns-admin" "dns-write" "dns-read")
+ROLES=("familytree-admin" "familytree-write" "familytree-read")
 ROLE_DESCRIPTIONS=(
-    "Full DNS management access"
-    "Create and update DNS records"
-    "Read-only DNS access"
+    "Full family tree management access"
+    "Create and update family tree data"
+    "Read-only family tree access"
 )
 
 for i in "${!ROLES[@]}"; do
@@ -358,10 +358,10 @@ if [ -z "$USER_EXISTS" ]; then
     
     echo "✅ User '$TEST_USERNAME' created with ID: $USER_ID"
     
-    # Assign dns-admin role to test user
+    # Assign familytree-admin role to test user
     if [ -n "$USER_ID" ]; then
-        echo "🔧 Assigning dns-admin role to user..."
-        ROLE_REPRESENTATION=$(curl -sf -X GET "$KEYCLOAK_URL/admin/realms/$REALM_NAME/roles/dns-admin" \
+        echo "🔧 Assigning familytree-admin role to user..."
+        ROLE_REPRESENTATION=$(curl -sf -X GET "$KEYCLOAK_URL/admin/realms/$REALM_NAME/roles/familytree-admin" \
             -H "Authorization: Bearer $ADMIN_TOKEN")
         
         curl -sf -X POST "$KEYCLOAK_URL/admin/realms/$REALM_NAME/users/$USER_ID/role-mappings/realm" \
@@ -386,8 +386,8 @@ echo "  Test User: $TEST_USERNAME"
 echo "  Test Password: $TEST_PASSWORD"
 echo ""
 echo "🌐 Web Application:"
-echo "  URL: http://localhost:14200"
-echo "  Redirect URI: http://localhost:14200/callback"
+echo "  URL: http://localhost:15200"
+echo "  Redirect URI: http://localhost:15200/callback"
 echo ""
 echo "🔐 Test authentication:"
 echo "  curl -X POST '$KEYCLOAK_URL/realms/$REALM_NAME/protocol/openid-connect/token' \\"

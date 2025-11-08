@@ -56,9 +56,6 @@ COPY --from=builder /build/familytreeapi /familytreeapi
 # Use nonroot user (UID 65532)
 USER nonroot:nonroot
 
-# Expose DNS ports
-EXPOSE 53/tcp 53/udp
-
 # Health check endpoint (if your app supports it)
 EXPOSE 8080/tcp
 

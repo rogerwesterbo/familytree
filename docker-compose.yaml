@@ -10,7 +10,7 @@ services:
   #   # Use ACL file for username-based authentication
   #   # --aclfile: Load ACL from file
   #   # --appendonly yes: Enable data persistence
-  #   # --save "": Disable RDB snapshots (AOF is enough for DNS data)
+  #   # --save "": Disable RDB snapshots (AOF is enough for data)
   #   # Note: ACL file is authoritative; changes via ACL SETUSER won't persist
   #   command: valkey-server --appendonly yes --aclfile /etc/valkey/users.acl --save ""
   #   restart: unless-stopped

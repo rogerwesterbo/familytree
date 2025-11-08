@@ -1,30 +1,152 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
+import { ThemeProvider, useTheme, AuthProvider } from './contexts';
+import { Layout, ProtectedRoute, ScrollToTop } from './components';
 
-function App() {
-  const [count, setCount] = useState(0);
+// Pages
+import {
+  LoginPage,
+  CallbackPage,
+  DashboardPage,
+  ProfilePage,
+  PersonsPage,
+  RelationshipsPage,
+  RelationshipDetailPage,
+  SearchPage,
+  ExportPage,
+  UnauthorizedPage,
+  ForbiddenPage,
+  NotFoundPage,
+  ServerErrorPage,
+} from './pages';
+
+import { AdminDashboardPage, CachePage } from './pages/admin';
+
+function AppContent() {
+  const { theme } = useTheme();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount(count => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <Theme accentColor="blue" grayColor="slate" radius="medium" appearance={theme}>
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/callback" element={<CallbackPage />} />
+
+            {/* Protected routes with layout */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <DashboardPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <ProfilePage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/persons"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <PersonsPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/relationships"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <RelationshipsPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/relationships/:id"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <RelationshipDetailPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <SearchPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/export"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <ExportPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <AdminDashboardPage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/cache"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <CachePage />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Error routes */}
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="/forbidden" element={<ForbiddenPage />} />
+            <Route path="/server-error" element={<ServerErrorPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </Theme>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 
