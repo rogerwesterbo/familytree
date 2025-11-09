@@ -205,6 +205,36 @@ go-security-scan: install-security-scanner ## Run gosec security scan (fails on 
 # $1 - target path with name of binary
 # $2 - package url which can be installed
 # $3 - specific version of package
+##@ Data
+.PHONY: clean-data clean-data-arangodb clean-data-postgres
+clean-data: clean-data-arangodb clean-data-postgres ## Clean all data under hack/data (arangodb & postgres)
+	@printf "$(CYAN)Cleaning hack/data (arangodb & postgres)...$(RESET)\n"
+	@$(MAKE) clean-data-arangodb
+	@$(MAKE) clean-data-postgres
+	@printf "$(GREEN)✓ hack/data cleaned$(RESET)\n"
+
+clean-data-arangodb: ## Remove contents of hack/data/arangodb but preserve .gitkeep if present
+	@dir=hack/data/arangodb; \
+	if [ -d "$$dir" ]; then \
+		printf "$(CYAN)Cleaning $$dir...$(RESET)\n"; \
+		# remove all children but keep .gitkeep (if present) \
+		find "$$dir" -mindepth 1 -maxdepth 1 -not -name '.gitkeep' -exec rm -rf {} +; \
+		printf "$(GREEN)✓ cleaned arangodb data$(RESET)\n"; \
+	else \
+		printf "$(YELLOW)Directory $$dir not found, skipping$(RESET)\n"; \
+	fi
+
+clean-data-postgres: ## Remove contents of hack/data/postgres but preserve .gitkeep if present
+	@dir=hack/data/postgres; \
+	if [ -d "$$dir" ]; then \
+		printf "$(CYAN)Cleaning $$dir...$(RESET)\n"; \
+		# remove all children but keep .gitkeep (if present) \
+		find "$$dir" -mindepth 1 -maxdepth 1 -not -name '.gitkeep' -exec rm -rf {} +; \
+		printf "$(GREEN)✓ cleaned postgres data$(RESET)\n"; \
+	else \
+		printf "$(YELLOW)Directory $$dir not found, skipping$(RESET)\n"; \
+	fi
+
 define go-install-tool
 @[ -f "$(1)-$(3)" ] || { \
 set -e; \
