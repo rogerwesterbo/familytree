@@ -104,10 +104,6 @@ docker-push: ## Push docker image to registry
 	docker push ghcr.io/rogerwesterbo/familytree:latest
 	@printf "$(GREEN)✓ Docker image pushed successfully$(RESET)\n"
 
-.PHONY: docker-run
-docker-run: ## Run docker container locally
-	docker run --rm -p 53:53/tcp -p 53:53/udp -p 14000:14000 -p 14001:14001 -p 14002:14002 ghcr.io/rogerwesterbo/familytree:latest
-
 .PHONY: release
 release: swagger docker-build docker-push ## Build and push docker image (full release workflow)
 	@printf "$(GREEN)$(BOLD)✓ Release complete!$(RESET)\n"

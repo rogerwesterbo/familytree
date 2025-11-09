@@ -41,7 +41,7 @@ services:
     container_name: arangodb
     restart: unless-stopped
     ports:
-      - '${ARANGODB_PORT:-8529}:8529'
+      - '${ARANGODB_PORT:-15104}:8529'
     volumes:
       - ./hack/data/arangodb:/var/lib/arangodb3
     environment:
