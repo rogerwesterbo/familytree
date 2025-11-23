@@ -11,6 +11,7 @@ import {
   RocketIcon,
   BarChartIcon,
   DownloadIcon,
+  Share2Icon,
 } from '@radix-ui/react-icons';
 import { NavLink, useLocation } from 'react-router-dom';
 import './Sidebar.css';
@@ -24,6 +25,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { to: '/', icon: <DashboardIcon />, label: 'Dashboard' },
+  { to: '/graph', icon: <Share2Icon />, label: 'Graph View' },
   { to: '/persons', icon: <PersonIcon />, label: 'Persons' },
   { to: '/relationships', icon: <GlobeIcon />, label: 'Relationships' },
   { to: '/export', icon: <DownloadIcon />, label: 'Export' },

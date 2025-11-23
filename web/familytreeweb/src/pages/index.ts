@@ -7,6 +7,7 @@ export { default as RelationshipsPage } from './RelationshipsPage';
 export { default as RelationshipDetailPage } from './RelationshipDetailPage';
 export { SearchPage } from './SearchPage';
 export { default as ExportPage } from './ExportPage';
+export { default as GraphViewPage } from './GraphViewPage';
 export { default as UnauthorizedPage } from './UnauthorizedPage';
 export { default as ForbiddenPage } from './ForbiddenPage';
 export { default as NotFoundPage } from './NotFoundPage';
