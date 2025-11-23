@@ -19,6 +19,9 @@ func Init() {
 	viper.SetDefault(consts.HTTP_API_PORT, ":8080")
 	viper.SetDefault(consts.HTTP_API_READINESS_PROBE_PORT, ":8081")
 	viper.SetDefault(consts.HTTP_API_LIVENESS_PROBE_PORT, ":8082")
+	viper.SetDefault(consts.HTTP_API_SECURE, true)
+	viper.SetDefault(consts.HTTP_API_TLS_CERT_FILE, "hack/certs/server.crt")
+	viper.SetDefault(consts.HTTP_API_TLS_KEY_FILE, "hack/certs/server.key")
 
 	// Rate Limiting settings
 	viper.SetDefault(consts.RATE_LIMIT_ENABLED, true)

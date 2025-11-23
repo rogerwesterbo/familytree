@@ -58,6 +58,15 @@ service:
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
 
+# HTTP API Configuration
+httpApi:
+  # Enable HTTPS/TLS for the API server
+  secure: false
+  # TLS certificate secret name (must contain tls.crt and tls.key)
+  tlsSecretName: ""
+  # CORS allowed origins
+  corsAllowedOrigins: ""
+
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false

@@ -132,9 +132,6 @@ func (am *AuthMiddleware) Authenticate(next http.Handler) http.Handler {
 		ctx = context.WithValue(ctx, usernameKey, claims.PreferredUser)
 		ctx = context.WithValue(ctx, userIDKey, token.Subject)
 
-		// Log successful authentication
-		vlog.Debugf("Authenticated user: %s (%s)", claims.PreferredUser, claims.Email)
-
 		// Call the next handler with the updated context
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

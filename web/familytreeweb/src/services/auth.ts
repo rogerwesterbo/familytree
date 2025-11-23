@@ -1,10 +1,10 @@
 // OIDC Configuration
 export const OIDC_CONFIG = {
-  authority: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:15101',
+  authority: import.meta.env.VITE_KEYCLOAK_URL || 'https://localhost:15101',
   realm: import.meta.env.VITE_KEYCLOAK_REALM || 'familytree',
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'familytree-web',
-  redirectUri: import.meta.env.VITE_REDIRECT_URI || 'http://localhost:15200/callback',
-  postLogoutRedirectUri: import.meta.env.VITE_POST_LOGOUT_REDIRECT_URI || 'http://localhost:15200',
+  redirectUri: import.meta.env.VITE_REDIRECT_URI || 'https://localhost:15200/callback',
+  postLogoutRedirectUri: import.meta.env.VITE_POST_LOGOUT_REDIRECT_URI || 'https://localhost:15200',
   scope: 'openid profile email',
 };
 

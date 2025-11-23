@@ -40,6 +40,19 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: HTTP_API_SECURE
+              value: "{{ .Values.httpApi.secure }}"
+            {{- if .Values.httpApi.secure }}
+            - name: HTTP_API_TLS_CERT_FILE
+              value: "/etc/tls/tls.crt"
+            - name: HTTP_API_TLS_KEY_FILE
+              value: "/etc/tls/tls.key"
+            {{- end }}
+            {{- if .Values.httpApi.corsAllowedOrigins }}
+            - name: HTTP_API_CORS_ALLOWED_ORIGINS
+              value: "{{ .Values.httpApi.corsAllowedOrigins }}"
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -56,14 +69,24 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            {{- if .Values.httpApi.secure }}
+            - name: tls-certs
+              mountPath: /etc/tls
+              readOnly: true
+            {{- end }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            {{- end }}
       volumes:
+        {{- if .Values.httpApi.secure }}
+        - name: tls-certs
+          secret:
+            secretName: {{ .Values.httpApi.tlsSecretName }}
+        {{- end }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

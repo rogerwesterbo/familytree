@@ -201,14 +201,22 @@ WEB_CLIENT_JSON=$(cat <<EOF
     "directAccessGrantsEnabled": false,
     "implicitFlowEnabled": false,
     "serviceAccountsEnabled": false,
-    "redirectUris": ["http://localhost:15200/callback", "http://localhost:15200/*"],
-    "webOrigins": ["http://localhost:15200"],
+    "redirectUris": [
+        "http://localhost:15200/callback",
+        "http://localhost:15200/*",
+        "https://localhost:15200/callback",
+        "https://localhost:15200/*"
+    ],
+    "webOrigins": ["http://localhost:15200", "https://localhost:15200"],
     "rootUrl": "http://localhost:15200",
     "baseUrl": "http://localhost:15200",
     "attributes": {
         "pkce.code.challenge.method": "S256",
-        "post.logout.redirect.uris": "http://localhost:15200",
-        "access.token.lifespan": "3600"
+        "post.logout.redirect.uris": "http://localhost:15200##https://localhost:15200",
+        "access.token.lifespan": "3600",
+        "access.token.signed.response.alg": "RS512",
+        "id.token.signed.response.alg": "RS512",
+        "token.endpoint.auth.signing.alg": "RS512"
     },
     "protocolMappers": [
         {

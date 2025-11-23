@@ -10,6 +10,8 @@ import (
 	"github.com/rogerwesterbo/familytree/internal/httpserver/httproutes"
 	"github.com/rogerwesterbo/familytree/internal/httpserver/middleware"
 	"github.com/rogerwesterbo/familytree/internal/services/v1ratelimitservice"
+	"github.com/rogerwesterbo/familytree/pkg/consts"
+	"github.com/spf13/viper"
 	"github.com/vitistack/common/pkg/loggers/vlog"
 )
 
@@ -20,6 +22,9 @@ type HTTPServer struct {
 	rateLimiter    *v1ratelimitservice.RateLimiter
 	authMiddleware *middleware.AuthMiddleware
 	corsMiddleware *middleware.CORSMiddleware
+	secure         bool
+	tlsCertFile    string
+	tlsKeyFile     string
 }
 
 // New creates a new HTTP server instance
@@ -36,11 +41,19 @@ func New(
 	// Initialize CORS middleware
 	corsMiddleware := middleware.NewCORSMiddleware()
 
+	// Get TLS configuration from environment
+	secure := viper.GetBool(consts.HTTP_API_SECURE)
+	tlsCertFile := viper.GetString(consts.HTTP_API_TLS_CERT_FILE)
+	tlsKeyFile := viper.GetString(consts.HTTP_API_TLS_KEY_FILE)
+
 	return &HTTPServer{
 		address:        address,
 		rateLimiter:    rateLimiter,
 		authMiddleware: authMiddleware,
 		corsMiddleware: corsMiddleware,
+		secure:         secure,
+		tlsCertFile:    tlsCertFile,
+		tlsKeyFile:     tlsKeyFile,
 	}, nil
 }
 
@@ -67,11 +80,17 @@ func (s *HTTPServer) Start() error {
 		IdleTimeout:  60 * time.Second,
 	}
 
-	vlog.Infof("Starting HTTP API server on %s", s.address)
-
 	// Start server in a goroutine
 	go func() {
-		if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		var err error
+		if s.secure {
+			vlog.Infof("Starting HTTPS API server on %s (cert: %s, key: %s)", s.address, s.tlsCertFile, s.tlsKeyFile)
+			err = s.server.ListenAndServeTLS(s.tlsCertFile, s.tlsKeyFile)
+		} else {
+			vlog.Infof("Starting HTTP API server on %s", s.address)
+			err = s.server.ListenAndServe()
+		}
+		if err != nil && err != http.ErrServerClosed {
 			vlog.Errorf("HTTP server error: %v", err)
 		}
 	}()

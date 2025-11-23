@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Flex, Card, Text, Spinner } from '@radix-ui/themes';
 import * as authService from '../services/auth';
@@ -7,8 +7,13 @@ export default function CallbackPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
+    // Prevent double execution in React Strict Mode
+    if (hasProcessed.current) return;
+    hasProcessed.current = true;
+
     handleCallback();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
