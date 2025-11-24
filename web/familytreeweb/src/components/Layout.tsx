@@ -14,7 +14,9 @@ export default function Layout({ children, noPadding = false }: LayoutProps) {
       <Header />
       <Flex style={{ flex: 1 }}>
         <Sidebar />
-        <Box style={{ flex: 1, padding: noPadding ? '0' : '2rem', overflowY: 'auto' }}>{children}</Box>
+        <Box style={{ flex: 1, padding: noPadding ? '0' : '2rem', overflowY: 'auto' }}>
+          {children}
+        </Box>
       </Flex>
     </Flex>
   );

@@ -20,46 +20,46 @@ import { useTheme } from '../contexts';
 
 /**
  * FAMILY TREE MODELING GUIDE
- * 
+ *
  * This graph uses a hybrid node-edge approach for family trees:
- * 
+ *
  * 1. PERSON NODES: Represent individuals with all their details (name, dates, etc.)
- * 
+ *
  * 2. RELATIONSHIP NODES: Intermediate nodes representing connections between people
  *    - Contains rich data: type, startDate, endDate, notes
  *    - Different types: spouse/married, parent-child, sibling, etc.
  *    - Can be color-coded by type
- * 
+ *
  * 3. EDGES: Connect persons to relationships
  *    - Person A → Relationship → Person B
  *    - Relationship → Child Person (for offspring)
- * 
+ *
  * MODELING PATTERNS:
- * 
+ *
  * A. MARRIAGE/PARTNERSHIP:
  *    Parent1 → [Spouse Relationship] → Parent2
  *    - Relationship type: "spouse" or "married"
  *    - startDate: when they met/married
  *    - endDate: divorce/separation (if applicable)
  *    - notes: additional details
- * 
+ *
  * B. CHILDREN FROM RELATIONSHIP:
  *    Parent1 → [Spouse Rel] → Parent2
  *                  ↓
  *                Child
  *    - Create parent-child relationships from each parent to child
  *    - Or link child directly from the spouse relationship node
- * 
+ *
  * C. PARENT-CHILD:
  *    Parent → [Parent Relationship] → Child
  *    - Relationship type: "parent" (or "child" from child's perspective)
  *    - Can track adoption dates, custody info in notes
- * 
+ *
  * D. SIBLINGS:
  *    Sibling1 → [Sibling Relationship] → Sibling2
  *    - Relationship type: "sibling"
  *    - Or derive from common parents
- * 
+ *
  * ADVANCED: For children from marriages, you could:
  * 1. Query child relationships where fromPersonId or toPersonId is a parent
  * 2. Position child nodes below the relationship node
@@ -100,9 +100,7 @@ function PersonNode({ data }: { data: PersonNodeData }) {
         </div>
       )}
       {data.gender && (
-        <div style={{ fontSize: '12px', color: 'var(--gray-11)' }}>
-          {data.gender}
-        </div>
+        <div style={{ fontSize: '12px', color: 'var(--gray-11)' }}>{data.gender}</div>
       )}
     </Box>
   );
@@ -138,29 +136,33 @@ function RelationshipNode({ data }: { data: RelationshipNodeData }) {
         minHeight: '280px',
       }}
     >
-      <div style={{ 
-        fontWeight: 'bold', 
-        fontSize: '12px', 
-        textAlign: 'center', 
-        marginBottom: '8px',
-        padding: '4px 8px',
-        background: colors.header,
-        color: 'white',
-        borderRadius: '4px',
-      }}>
+      <div
+        style={{
+          fontWeight: 'bold',
+          fontSize: '12px',
+          textAlign: 'center',
+          marginBottom: '8px',
+          padding: '4px 8px',
+          background: colors.header,
+          color: 'white',
+          borderRadius: '4px',
+        }}
+      >
         {data.type.toUpperCase()}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '10px', color: 'var(--gray-11)' }}>
-        {data.startDate && (
-          <div>Start: {new Date(data.startDate).toLocaleDateString()}</div>
-        )}
-        {data.endDate && (
-          <div>End: {new Date(data.endDate).toLocaleDateString()}</div>
-        )}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          fontSize: '10px',
+          color: 'var(--gray-11)',
+        }}
+      >
+        {data.startDate && <div>Start: {new Date(data.startDate).toLocaleDateString()}</div>}
+        {data.endDate && <div>End: {new Date(data.endDate).toLocaleDateString()}</div>}
         {data.notes && (
-          <div style={{ fontStyle: 'italic', marginTop: '4px', fontSize: '9px' }}>
-            {data.notes}
-          </div>
+          <div style={{ fontStyle: 'italic', marginTop: '4px', fontSize: '9px' }}>{data.notes}</div>
         )}
       </div>
     </Box>
@@ -173,140 +175,144 @@ export default function GraphViewPage() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [loading, setLoading] = useState(true);
 
-  const buildGraph = useCallback((personsData: api.Person[], relationshipsData: api.Relationship[]) => {
-    const newNodes: Node[] = [];
-    const newEdges: Edge[] = [];
+  const buildGraph = useCallback(
+    (personsData: api.Person[], relationshipsData: api.Relationship[]) => {
+      const newNodes: Node[] = [];
+      const newEdges: Edge[] = [];
 
-    // Track which persons are part of relationships (will be inside groups)
-    const personsInRelationships = new Set<string>();
-    const relationshipGroups = new Map<string, { rel: api.Relationship; index: number }>();
+      // Track which persons are part of relationships (will be inside groups)
+      const personsInRelationships = new Set<string>();
+      const relationshipGroups = new Map<string, { rel: api.Relationship; index: number }>();
 
-    // First pass: identify persons in relationships and create relationship groups
-    let relationshipIndex = 0;
-    relationshipsData.forEach((rel) => {
-      const relNodeId = `rel-${rel.id}`;
-      relationshipGroups.set(relNodeId, { rel, index: relationshipIndex });
-      
-      // Mark these persons as being in a relationship group
-      personsInRelationships.add(rel.fromPersonId);
-      personsInRelationships.add(rel.toPersonId);
-      
-      relationshipIndex++;
-    });
+      // First pass: identify persons in relationships and create relationship groups
+      let relationshipIndex = 0;
+      relationshipsData.forEach(rel => {
+        const relNodeId = `rel-${rel.id}`;
+        relationshipGroups.set(relNodeId, { rel, index: relationshipIndex });
 
-    // Create relationship group nodes (these will contain the parent persons)
-    relationshipGroups.forEach(({ rel, index }, relNodeId) => {
-      const groupX = 50 + (index % 3) * 550;
-      const groupY = 50 + Math.floor(index / 3) * 400;
-      
-      newNodes.push({
-        id: relNodeId,
-        type: 'relationship',
-        position: { x: groupX, y: groupY },
-        data: { ...rel } as RelationshipNodeData,
-        style: {
-          width: 450,
-          height: 280,
-        },
+        // Mark these persons as being in a relationship group
+        personsInRelationships.add(rel.fromPersonId);
+        personsInRelationships.add(rel.toPersonId);
+
+        relationshipIndex++;
       });
-    });
 
-    // Create person nodes
-    // Persons in relationships are positioned inside their group, others positioned independently
-    let standalonePersonIndex = 0;
-    
-    personsData.forEach((person) => {
-      const personId = person.id!;
-      const personNodeId = `person-${personId}`;
-      
-      // Find which relationship(s) this person is in
-      const parentRelationships = Array.from(relationshipGroups.entries()).filter(
-        ([, { rel }]) => rel.fromPersonId === personId || rel.toPersonId === personId
-      );
-      
-      if (parentRelationships.length > 0) {
-        // Position inside the first relationship group
-        const [relNodeId, { rel }] = parentRelationships[0];
-        
-        // Position parents side by side inside the group
-        const isFirstPerson = rel.fromPersonId === personId;
-        const relativeX = isFirstPerson ? 50 : 250;
-        const relativeY = 80;
-        
-        newNodes.push({
-          id: personNodeId,
-          type: 'person',
-          position: { x: relativeX, y: relativeY },
-          data: { ...person } as PersonNodeData,
-          parentId: relNodeId, // This makes it a child of the group
-          extent: 'parent' as const, // Constrains movement within parent
-        });
-      } else {
-        // Standalone person (not in a relationship yet)
-        const x = 50 + (standalonePersonIndex % 4) * 200;
-        const y = 600 + Math.floor(standalonePersonIndex / 4) * 200;
-        
-        newNodes.push({
-          id: personNodeId,
-          type: 'person',
-          position: { x, y },
-          data: { ...person } as PersonNodeData,
-        });
-        
-        standalonePersonIndex++;
-      }
-    });
+      // Create relationship group nodes (these will contain the parent persons)
+      relationshipGroups.forEach(({ rel, index }, relNodeId) => {
+        const groupX = 50 + (index % 3) * 550;
+        const groupY = 50 + Math.floor(index / 3) * 400;
 
-    // Find children from relationships
-    relationshipGroups.forEach(({ rel }, relNodeId) => {
-      // Look for persons who are children of both parents in this relationship
-      const children = relationshipsData.filter(childRel => 
-        childRel.type.toLowerCase() === 'parent' && 
-        (childRel.fromPersonId === rel.fromPersonId || childRel.fromPersonId === rel.toPersonId)
-      );
-      
-      // Find common children (children of both parents)
-      const childrenIds = new Map<string, number>();
-      children.forEach(childRel => {
-        const childId = childRel.toPersonId;
-        childrenIds.set(childId, (childrenIds.get(childId) || 0) + 1);
+        newNodes.push({
+          id: relNodeId,
+          type: 'relationship',
+          position: { x: groupX, y: groupY },
+          data: { ...rel } as RelationshipNodeData,
+          style: {
+            width: 450,
+            height: 280,
+          },
+        });
       });
-      
-      // Children with count=2 are children of both parents
-      const commonChildren = Array.from(childrenIds.entries())
-        .filter(([, count]) => count === 2)
-        .map(([childId]) => childId);
-      
-      // Create edges from relationship group to children
-      commonChildren.forEach((childId, index) => {
-        newEdges.push({
-          id: `edge-${relNodeId}-child-${childId}`,
-          source: relNodeId,
-          target: `person-${childId}`,
-          animated: false,
-          label: 'child',
-          style: { stroke: 'var(--green-9)', strokeWidth: 2 },
-          type: 'smoothstep',
-          sourceHandle: 'bottom',
-        });
-        
-        // Update child position to be below the relationship group
-        const childNodeIndex = newNodes.findIndex(n => n.id === `person-${childId}`);
-        if (childNodeIndex !== -1) {
-          const groupNode = newNodes.find(n => n.id === relNodeId);
-          if (groupNode) {
-            newNodes[childNodeIndex].position = {
-              x: groupNode.position.x + 100 + (index * 150),
-              y: groupNode.position.y + 350,
-            };
-          }
+
+      // Create person nodes
+      // Persons in relationships are positioned inside their group, others positioned independently
+      let standalonePersonIndex = 0;
+
+      personsData.forEach(person => {
+        const personId = person.id!;
+        const personNodeId = `person-${personId}`;
+
+        // Find which relationship(s) this person is in
+        const parentRelationships = Array.from(relationshipGroups.entries()).filter(
+          ([, { rel }]) => rel.fromPersonId === personId || rel.toPersonId === personId
+        );
+
+        if (parentRelationships.length > 0) {
+          // Position inside the first relationship group
+          const [relNodeId, { rel }] = parentRelationships[0];
+
+          // Position parents side by side inside the group
+          const isFirstPerson = rel.fromPersonId === personId;
+          const relativeX = isFirstPerson ? 50 : 250;
+          const relativeY = 80;
+
+          newNodes.push({
+            id: personNodeId,
+            type: 'person',
+            position: { x: relativeX, y: relativeY },
+            data: { ...person } as PersonNodeData,
+            parentId: relNodeId, // This makes it a child of the group
+            extent: 'parent' as const, // Constrains movement within parent
+          });
+        } else {
+          // Standalone person (not in a relationship yet)
+          const x = 50 + (standalonePersonIndex % 4) * 200;
+          const y = 600 + Math.floor(standalonePersonIndex / 4) * 200;
+
+          newNodes.push({
+            id: personNodeId,
+            type: 'person',
+            position: { x, y },
+            data: { ...person } as PersonNodeData,
+          });
+
+          standalonePersonIndex++;
         }
       });
-    });
 
-    setNodes(newNodes);
-    setEdges(newEdges);
-  }, [setNodes, setEdges]);
+      // Find children from relationships
+      relationshipGroups.forEach(({ rel }, relNodeId) => {
+        // Look for persons who are children of both parents in this relationship
+        const children = relationshipsData.filter(
+          childRel =>
+            childRel.type.toLowerCase() === 'parent' &&
+            (childRel.fromPersonId === rel.fromPersonId || childRel.fromPersonId === rel.toPersonId)
+        );
+
+        // Find common children (children of both parents)
+        const childrenIds = new Map<string, number>();
+        children.forEach(childRel => {
+          const childId = childRel.toPersonId;
+          childrenIds.set(childId, (childrenIds.get(childId) || 0) + 1);
+        });
+
+        // Children with count=2 are children of both parents
+        const commonChildren = Array.from(childrenIds.entries())
+          .filter(([, count]) => count === 2)
+          .map(([childId]) => childId);
+
+        // Create edges from relationship group to children
+        commonChildren.forEach((childId, index) => {
+          newEdges.push({
+            id: `edge-${relNodeId}-child-${childId}`,
+            source: relNodeId,
+            target: `person-${childId}`,
+            animated: false,
+            label: 'child',
+            style: { stroke: 'var(--green-9)', strokeWidth: 2 },
+            type: 'smoothstep',
+            sourceHandle: 'bottom',
+          });
+
+          // Update child position to be below the relationship group
+          const childNodeIndex = newNodes.findIndex(n => n.id === `person-${childId}`);
+          if (childNodeIndex !== -1) {
+            const groupNode = newNodes.find(n => n.id === relNodeId);
+            if (groupNode) {
+              newNodes[childNodeIndex].position = {
+                x: groupNode.position.x + 100 + index * 150,
+                y: groupNode.position.y + 350,
+              };
+            }
+          }
+        });
+      });
+
+      setNodes(newNodes);
+      setEdges(newEdges);
+    },
+    [setNodes, setEdges]
+  );
 
   // Load data
   const loadData = useCallback(async () => {
@@ -316,11 +322,11 @@ export default function GraphViewPage() {
         api.listPersons(),
         api.listRelationships(),
       ]);
-      
+
       // Ensure we have arrays
       const persons = Array.isArray(personsData) ? personsData : [];
       const relationships = Array.isArray(relationshipsData) ? relationshipsData : [];
-      
+
       console.log('Loaded persons:', persons.length, 'relationships:', relationships.length);
       buildGraph(persons, relationships);
     } catch (error) {
@@ -347,7 +353,7 @@ export default function GraphViewPage() {
         animated: false,
         style: { stroke: 'var(--green-9)', strokeWidth: 2 },
       };
-      setEdges((eds) => addEdge(newEdge, eds));
+      setEdges(eds => addEdge(newEdge, eds));
     },
     [setEdges]
   );
@@ -364,7 +370,7 @@ export default function GraphViewPage() {
         lastName: 'Person',
       },
     };
-    setNodes((nds) => [...nds, newNode]);
+    setNodes(nds => [...nds, newNode]);
   };
 
   const addRelationshipNode = () => {
@@ -378,7 +384,7 @@ export default function GraphViewPage() {
         type: 'parent',
       },
     };
-    setNodes((nds) => [...nds, newNode]);
+    setNodes(nds => [...nds, newNode]);
   };
 
   if (loading) {

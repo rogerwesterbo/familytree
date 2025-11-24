@@ -217,7 +217,6 @@ clean-data-arangodb: ## Remove contents of hack/data/arangodb but preserve .gitk
 	@dir=hack/data/arangodb; \
 	if [ -d "$$dir" ]; then \
 		printf "$(CYAN)Cleaning $$dir...$(RESET)\n"; \
-		# remove all children but keep .gitkeep (if present) \
 		find "$$dir" -mindepth 1 -maxdepth 1 -not -name '.gitkeep' -exec rm -rf {} +; \
 		printf "$(GREEN)✓ cleaned arangodb data$(RESET)\n"; \
 	else \
@@ -228,7 +227,6 @@ clean-data-postgres: ## Remove contents of hack/data/postgres but preserve .gitk
 	@dir=hack/data/postgres; \
 	if [ -d "$$dir" ]; then \
 		printf "$(CYAN)Cleaning $$dir...$(RESET)\n"; \
-		# remove all children but keep .gitkeep (if present) \
 		find "$$dir" -mindepth 1 -maxdepth 1 -not -name '.gitkeep' -exec rm -rf {} +; \
 		printf "$(GREEN)✓ cleaned postgres data$(RESET)\n"; \
 	else \

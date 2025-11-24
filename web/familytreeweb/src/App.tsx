@@ -27,11 +27,7 @@ const CachePage = lazy(() => import('./pages/admin/CachePage'));
 // Loading fallback component
 function LoadingFallback() {
   return (
-    <Flex
-      align="center"
-      justify="center"
-      style={{ minHeight: '100vh', width: '100%' }}
-    >
+    <Flex align="center" justify="center" style={{ minHeight: '100vh', width: '100%' }}>
       <Spinner size="3" />
     </Flex>
   );
@@ -62,105 +58,105 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <ProfilePage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/persons"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <PersonsPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/relationships"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <RelationshipsPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/relationships/:id"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <RelationshipDetailPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/search"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <SearchPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/export"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <ExportPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/graph"
-              element={
-                <ProtectedRoute>
-                  <Layout noPadding>
-                    <GraphViewPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <ProfilePage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/persons"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <PersonsPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/relationships"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <RelationshipsPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/relationships/:id"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <RelationshipDetailPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <SearchPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/export"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <ExportPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/graph"
+                element={
+                  <ProtectedRoute>
+                    <Layout noPadding>
+                      <GraphViewPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Admin routes */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <AdminDashboardPage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/cache"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <CachePage />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
+              {/* Admin routes */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <AdminDashboardPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/cache"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <CachePage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Error routes */}
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
-            <Route path="/forbidden" element={<ForbiddenPage />} />
-            <Route path="/server-error" element={<ServerErrorPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+              {/* Error routes */}
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
+              <Route path="/forbidden" element={<ForbiddenPage />} />
+              <Route path="/server-error" element={<ServerErrorPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
           </Suspense>
         </Router>
       </AuthProvider>
