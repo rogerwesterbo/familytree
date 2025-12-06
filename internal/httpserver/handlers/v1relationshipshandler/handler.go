@@ -24,18 +24,6 @@ func NewHandler(service *v1relationshipservice.RelationshipService) *Handler {
 }
 
 // HandleRelationships routes relationship requests based on HTTP method
-// @Summary Relationship operations
-// @Description Handle relationship CRUD operations
-// @Tags relationships
-// @Accept json
-// @Produce json
-// @Security BearerAuth
-// @Security OAuth2Password
-// @Router /v1/relationships [get]
-// @Router /v1/relationships [post]
-// @Router /v1/relationships/{id} [get]
-// @Router /v1/relationships/{id} [put]
-// @Router /v1/relationships/{id} [delete]
 func (h *Handler) HandleRelationships(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:

@@ -1,10 +1,10 @@
 module github.com/rogerwesterbo/familytree
 
-go 1.25.4
+go 1.25.5
 
 require (
 	github.com/arangodb/go-driver/v2 v2.1.6
-	github.com/vitistack/common v0.6.1
+	github.com/vitistack/common v0.8.4
 )
 
 require (

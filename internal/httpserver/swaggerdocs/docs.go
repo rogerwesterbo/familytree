@@ -51,7 +51,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse"
+                            "$ref": "#/definitions/interfaces.PersonsListResponse"
                         }
                     },
                     "500": {
@@ -92,7 +92,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest"
+                            "$ref": "#/definitions/interfaces.PersonCreateRequest"
                         }
                     }
                 ],
@@ -100,7 +100,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse"
+                            "$ref": "#/definitions/interfaces.PersonResponse"
                         }
                     },
                     "400": {
@@ -158,7 +158,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse"
+                            "$ref": "#/definitions/interfaces.PersonResponse"
                         }
                     },
                     "404": {
@@ -215,7 +215,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest"
+                            "$ref": "#/definitions/interfaces.PersonUpdateRequest"
                         }
                     }
                 ],
@@ -223,7 +223,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse"
+                            "$ref": "#/definitions/interfaces.PersonResponse"
                         }
                     },
                     "400": {
@@ -340,7 +340,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse"
+                            "$ref": "#/definitions/interfaces.RelationshipsListResponse"
                         }
                     },
                     "500": {
@@ -381,7 +381,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest"
+                            "$ref": "#/definitions/interfaces.RelationshipCreateRequest"
                         }
                     }
                 ],
@@ -389,7 +389,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse"
+                            "$ref": "#/definitions/interfaces.RelationshipResponse"
                         }
                     },
                     "400": {
@@ -447,7 +447,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse"
+                            "$ref": "#/definitions/interfaces.RelationshipResponse"
                         }
                     },
                     "404": {
@@ -504,7 +504,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest"
+                            "$ref": "#/definitions/interfaces.RelationshipUpdateRequest"
                         }
                     }
                 ],
@@ -512,7 +512,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse"
+                            "$ref": "#/definitions/interfaces.RelationshipResponse"
                         }
                     },
                     "400": {
@@ -606,7 +606,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.Person": {
+        "interfaces.Person": {
             "type": "object",
             "required": [
                 "firstName",
@@ -651,7 +651,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest": {
+        "interfaces.PersonCreateRequest": {
             "type": "object",
             "required": [
                 "firstName",
@@ -688,18 +688,18 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse": {
+        "interfaces.PersonResponse": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
                 },
                 "person": {
-                    "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person"
+                    "$ref": "#/definitions/interfaces.Person"
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest": {
+        "interfaces.PersonUpdateRequest": {
             "type": "object",
             "properties": {
                 "birthDate": {
@@ -732,7 +732,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse": {
+        "interfaces.PersonsListResponse": {
             "type": "object",
             "properties": {
                 "count": {
@@ -741,12 +741,12 @@ const docTemplate = `{
                 "persons": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person"
+                        "$ref": "#/definitions/interfaces.Person"
                     }
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship": {
+        "interfaces.Relationship": {
             "type": "object",
             "required": [
                 "_from",
@@ -789,7 +789,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest": {
+        "interfaces.RelationshipCreateRequest": {
             "type": "object",
             "required": [
                 "from",
@@ -823,18 +823,18 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse": {
+        "interfaces.RelationshipResponse": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
                 },
                 "relationship": {
-                    "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship"
+                    "$ref": "#/definitions/interfaces.Relationship"
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest": {
+        "interfaces.RelationshipUpdateRequest": {
             "type": "object",
             "properties": {
                 "endDate": {
@@ -863,7 +863,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse": {
+        "interfaces.RelationshipsListResponse": {
             "type": "object",
             "properties": {
                 "count": {
@@ -872,7 +872,7 @@ const docTemplate = `{
                 "relationships": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship"
+                        "$ref": "#/definitions/interfaces.Relationship"
                     }
                 }
             }

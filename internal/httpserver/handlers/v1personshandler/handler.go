@@ -24,18 +24,6 @@ func NewHandler(service *v1personservice.PersonService) *Handler {
 }
 
 // HandlePersons routes person requests based on HTTP method
-// @Summary Person operations
-// @Description Handle person CRUD operations
-// @Tags persons
-// @Accept json
-// @Produce json
-// @Security BearerAuth
-// @Security OAuth2Password
-// @Router /v1/persons [get]
-// @Router /v1/persons [post]
-// @Router /v1/persons/{id} [get]
-// @Router /v1/persons/{id} [put]
-// @Router /v1/persons/{id} [delete]
 func (h *Handler) HandlePersons(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:

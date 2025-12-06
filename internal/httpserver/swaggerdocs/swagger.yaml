@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  github_com_rogerwesterbo_familytree_pkg_interfaces.Person:
+  interfaces.Person:
     properties:
       _id:
         type: string
@@ -30,7 +30,7 @@ definitions:
     - firstName
     - lastName
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest:
+  interfaces.PersonCreateRequest:
     properties:
       birthDate:
         example: "1980-01-15T00:00:00Z"
@@ -57,14 +57,14 @@ definitions:
     - firstName
     - lastName
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse:
+  interfaces.PersonResponse:
     properties:
       message:
         type: string
       person:
-        $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person'
+        $ref: '#/definitions/interfaces.Person'
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest:
+  interfaces.PersonUpdateRequest:
     properties:
       birthDate:
         example: "1980-01-15T00:00:00Z"
@@ -88,16 +88,16 @@ definitions:
         example: "+1234567890"
         type: string
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse:
+  interfaces.PersonsListResponse:
     properties:
       count:
         type: integer
       persons:
         items:
-          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Person'
+          $ref: '#/definitions/interfaces.Person'
         type: array
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship:
+  interfaces.Relationship:
     properties:
       _from:
         type: string
@@ -126,7 +126,7 @@ definitions:
     - _to
     - relationType
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest:
+  interfaces.RelationshipCreateRequest:
     properties:
       endDate:
         example: "2020-12-31T00:00:00Z"
@@ -151,14 +151,14 @@ definitions:
     - relationType
     - to
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse:
+  interfaces.RelationshipResponse:
     properties:
       message:
         type: string
       relationship:
-        $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship'
+        $ref: '#/definitions/interfaces.Relationship'
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest:
+  interfaces.RelationshipUpdateRequest:
     properties:
       endDate:
         example: "2020-12-31T00:00:00Z"
@@ -179,13 +179,13 @@ definitions:
         example: persons/456
         type: string
     type: object
-  github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse:
+  interfaces.RelationshipsListResponse:
     properties:
       count:
         type: integer
       relationships:
         items:
-          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.Relationship'
+          $ref: '#/definitions/interfaces.Relationship'
         type: array
     type: object
 host: localhost:15000
@@ -223,7 +223,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonsListResponse'
+            $ref: '#/definitions/interfaces.PersonsListResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -246,14 +246,14 @@ paths:
         name: person
         required: true
         schema:
-          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonCreateRequest'
+          $ref: '#/definitions/interfaces.PersonCreateRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse'
+            $ref: '#/definitions/interfaces.PersonResponse'
         "400":
           description: Bad Request
           schema:
@@ -326,7 +326,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse'
+            $ref: '#/definitions/interfaces.PersonResponse'
         "404":
           description: Not Found
           schema:
@@ -360,14 +360,14 @@ paths:
         name: person
         required: true
         schema:
-          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonUpdateRequest'
+          $ref: '#/definitions/interfaces.PersonUpdateRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.PersonResponse'
+            $ref: '#/definitions/interfaces.PersonResponse'
         "400":
           description: Bad Request
           schema:
@@ -403,7 +403,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipsListResponse'
+            $ref: '#/definitions/interfaces.RelationshipsListResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -426,14 +426,14 @@ paths:
         name: relationship
         required: true
         schema:
-          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipCreateRequest'
+          $ref: '#/definitions/interfaces.RelationshipCreateRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse'
+            $ref: '#/definitions/interfaces.RelationshipResponse'
         "400":
           description: Bad Request
           schema:
@@ -506,7 +506,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse'
+            $ref: '#/definitions/interfaces.RelationshipResponse'
         "404":
           description: Not Found
           schema:
@@ -540,14 +540,14 @@ paths:
         name: relationship
         required: true
         schema:
-          $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipUpdateRequest'
+          $ref: '#/definitions/interfaces.RelationshipUpdateRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_rogerwesterbo_familytree_pkg_interfaces.RelationshipResponse'
+            $ref: '#/definitions/interfaces.RelationshipResponse'
         "400":
           description: Bad Request
           schema:
