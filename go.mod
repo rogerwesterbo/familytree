@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/arangodb/go-driver/v2 v2.1.6
-	github.com/vitistack/common v0.8.20
+	github.com/vitistack/common v0.8.28
 )
 
 require (
@@ -48,7 +48,7 @@ require (
 	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	golang.org/x/time v0.14.0
 	golang.org/x/tools v0.40.0 // indirect
