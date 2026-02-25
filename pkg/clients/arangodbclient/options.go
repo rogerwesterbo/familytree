@@ -6,7 +6,7 @@ import "time"
 type Options struct {
 	Endpoints  []string
 	Username   string
-	Password   string
+	Password   string // #nosec G117 -- configuration field, not a hardcoded secret
 	Database   string
 	Timeout    time.Duration
 	MaxRetries int

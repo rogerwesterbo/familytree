@@ -18,8 +18,10 @@ function recreateAll {
   openssl genrsa -out client.key 4096
   openssl req -new -key client.key -subj "/CN=FamilyTree-Client" -out client.csr
 
+  # Sign server cert with SANs for localhost development
   openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
-    -out server.crt -days 825 -sha256
+    -out server.crt -days 825 -sha256 \
+    -extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1")
 
   openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
     -out client.crt -days 825 -sha256

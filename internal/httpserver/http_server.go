@@ -3,7 +3,9 @@ package httpserver
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/rogerwesterbo/familytree/internal/clients"
@@ -14,6 +16,20 @@ import (
 	"github.com/spf13/viper"
 	"github.com/vitistack/common/pkg/loggers/vlog"
 )
+
+// tlsErrorFilterWriter filters out expected TLS handshake errors from self-signed certificates.
+// These errors are normal in development when clients don't trust the self-signed CA.
+type tlsErrorFilterWriter struct{}
+
+func (w *tlsErrorFilterWriter) Write(p []byte) (n int, err error) {
+	msg := string(p)
+	if strings.Contains(msg, "TLS handshake error") {
+		vlog.Debugf("suppressed: %s", strings.TrimSpace(msg))
+		return len(p), nil
+	}
+	vlog.Warnf("%s", strings.TrimSpace(msg))
+	return len(p), nil
+}
 
 // HTTPServer represents the HTTP API server
 type HTTPServer struct {
@@ -78,6 +94,7 @@ func (s *HTTPServer) Start() error {
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  60 * time.Second,
+		ErrorLog:     log.New(&tlsErrorFilterWriter{}, "", 0),
 	}
 
 	// Start server in a goroutine

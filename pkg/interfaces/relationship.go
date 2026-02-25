@@ -11,8 +11,8 @@ type Relationship struct {
 	From         string    `json:"_from" binding:"required"`
 	To           string    `json:"_to" binding:"required"`
 	RelationType string    `json:"relationType" binding:"required"`
-	StartDate    time.Time `json:"startDate,omitempty"`
-	EndDate      time.Time `json:"endDate,omitempty"`
+	StartDate    time.Time `json:"startDate"`
+	EndDate      time.Time `json:"endDate"`
 	Notes        string    `json:"notes,omitempty"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
@@ -23,8 +23,8 @@ type RelationshipCreateRequest struct {
 	From         string    `json:"from" binding:"required" example:"persons/123"`
 	To           string    `json:"to" binding:"required" example:"persons/456"`
 	RelationType string    `json:"relationType" binding:"required" example:"parent"`
-	StartDate    time.Time `json:"startDate,omitempty" example:"2000-01-01T00:00:00Z"`
-	EndDate      time.Time `json:"endDate,omitempty" example:"2020-12-31T00:00:00Z"`
+	StartDate    time.Time `json:"startDate" example:"2000-01-01T00:00:00Z"`
+	EndDate      time.Time `json:"endDate" example:"2020-12-31T00:00:00Z"`
 	Notes        string    `json:"notes,omitempty" example:"Biological parent"`
 }
 
@@ -33,8 +33,8 @@ type RelationshipUpdateRequest struct {
 	From         string    `json:"from,omitempty" example:"persons/123"`
 	To           string    `json:"to,omitempty" example:"persons/456"`
 	RelationType string    `json:"relationType,omitempty" example:"parent"`
-	StartDate    time.Time `json:"startDate,omitempty" example:"2000-01-01T00:00:00Z"`
-	EndDate      time.Time `json:"endDate,omitempty" example:"2020-12-31T00:00:00Z"`
+	StartDate    time.Time `json:"startDate" example:"2000-01-01T00:00:00Z"`
+	EndDate      time.Time `json:"endDate" example:"2020-12-31T00:00:00Z"`
 	Notes        string    `json:"notes,omitempty" example:"Biological parent"`
 }
 

@@ -27,8 +27,8 @@ func NewHandler(service *v1relationshipservice.RelationshipService) *Handler {
 func (h *Handler) HandleRelationships(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		if strings.HasPrefix(r.URL.Path, "/v1/relationships/") {
-			relationshipID := strings.TrimPrefix(r.URL.Path, "/v1/relationships/")
+		if after, ok := strings.CutPrefix(r.URL.Path, "/v1/relationships/"); ok {
+			relationshipID := after
 			if relationshipID != "" {
 				h.GetRelationship(w, r, relationshipID)
 				return

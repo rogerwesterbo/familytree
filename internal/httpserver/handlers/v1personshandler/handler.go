@@ -27,8 +27,8 @@ func NewHandler(service *v1personservice.PersonService) *Handler {
 func (h *Handler) HandlePersons(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		if strings.HasPrefix(r.URL.Path, "/v1/persons/") {
-			personID := strings.TrimPrefix(r.URL.Path, "/v1/persons/")
+		if after, ok := strings.CutPrefix(r.URL.Path, "/v1/persons/"); ok {
+			personID := after
 			if personID != "" {
 				h.GetPerson(w, r, personID)
 				return

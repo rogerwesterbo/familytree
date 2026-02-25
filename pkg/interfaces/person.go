@@ -9,8 +9,8 @@ type Person struct {
 	Rev       string    `json:"_rev,omitempty"`
 	FirstName string    `json:"firstName" binding:"required"`
 	LastName  string    `json:"lastName" binding:"required"`
-	BirthDate time.Time `json:"birthDate,omitempty"`
-	DeathDate time.Time `json:"deathDate,omitempty"`
+	BirthDate time.Time `json:"birthDate"`
+	DeathDate time.Time `json:"deathDate"`
 	Gender    string    `json:"gender,omitempty"`
 	Email     string    `json:"email,omitempty"`
 	Phone     string    `json:"phone,omitempty"`
@@ -22,8 +22,8 @@ type Person struct {
 type PersonCreateRequest struct {
 	FirstName string    `json:"firstName" binding:"required" example:"John"`
 	LastName  string    `json:"lastName" binding:"required" example:"Doe"`
-	BirthDate time.Time `json:"birthDate,omitempty" example:"1980-01-15T00:00:00Z"`
-	DeathDate time.Time `json:"deathDate,omitempty" example:"2050-05-20T00:00:00Z"`
+	BirthDate time.Time `json:"birthDate" example:"1980-01-15T00:00:00Z"`
+	DeathDate time.Time `json:"deathDate" example:"2050-05-20T00:00:00Z"`
 	Gender    string    `json:"gender,omitempty" example:"male"`
 	Email     string    `json:"email,omitempty" example:"john.doe@example.com"`
 	Phone     string    `json:"phone,omitempty" example:"+1234567890"`
@@ -33,8 +33,8 @@ type PersonCreateRequest struct {
 type PersonUpdateRequest struct {
 	FirstName string    `json:"firstName,omitempty" example:"John"`
 	LastName  string    `json:"lastName,omitempty" example:"Doe"`
-	BirthDate time.Time `json:"birthDate,omitempty" example:"1980-01-15T00:00:00Z"`
-	DeathDate time.Time `json:"deathDate,omitempty" example:"2050-05-20T00:00:00Z"`
+	BirthDate time.Time `json:"birthDate" example:"1980-01-15T00:00:00Z"`
+	DeathDate time.Time `json:"deathDate" example:"2050-05-20T00:00:00Z"`
 	Gender    string    `json:"gender,omitempty" example:"male"`
 	Email     string    `json:"email,omitempty" example:"john.doe@example.com"`
 	Phone     string    `json:"phone,omitempty" example:"+1234567890"`
