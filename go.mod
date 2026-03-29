@@ -4,7 +4,7 @@ go 1.26.1
 
 require (
 	github.com/arangodb/go-driver/v2 v2.2.0
-	github.com/vitistack/common v0.8.48
+	github.com/vitistack/common v0.8.51
 )
 
 require (
