@@ -340,6 +340,7 @@ export default function GraphViewPage() {
   }, [buildGraph, setEdges, setNodes]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
   }, [loadData]);
 

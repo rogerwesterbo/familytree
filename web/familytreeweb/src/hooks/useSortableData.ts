@@ -36,9 +36,8 @@ export function useSortableData<T>(
         if (aValue === null || aValue === undefined) return 1;
         if (bValue === null || bValue === undefined) return -1;
 
-        let comparison = 0;
+        let comparison: number;
 
-        // Handle different types
         if (typeof aValue === 'string' && typeof bValue === 'string') {
           comparison = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
         } else if (typeof aValue === 'number' && typeof bValue === 'number') {

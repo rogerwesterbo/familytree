@@ -22,12 +22,6 @@ export default function RelationshipDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      loadRelationship(id);
-    }
-  }, [id]);
-
   const loadRelationship = async (relationshipId: string) => {
     try {
       setIsLoading(true);
@@ -41,6 +35,13 @@ export default function RelationshipDetailPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (id) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadRelationship(id);
+    }
+  }, [id]);
 
   const handleDelete = async () => {
     if (!relationship?.id) return;

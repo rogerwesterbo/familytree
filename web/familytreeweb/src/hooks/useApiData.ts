@@ -66,6 +66,7 @@ export function useApiData<T>({
   }, [fetchFn, validateData, initialData, onError]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, [fetchData]);
 

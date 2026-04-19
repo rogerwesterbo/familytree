@@ -24,10 +24,6 @@ export default function ExportPage() {
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadPersons();
-  }, []);
-
   const loadPersons = async () => {
     try {
       setIsLoading(true);
@@ -42,6 +38,11 @@ export default function ExportPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadPersons();
+  }, []);
 
   const handleExport = async () => {
     try {

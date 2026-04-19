@@ -32,10 +32,6 @@ export default function PersonsPage() {
   // CRUD states
   const [deletingPerson, setDeletingPerson] = useState<api.Person | null>(null);
 
-  useEffect(() => {
-    loadPersons();
-  }, []);
-
   const loadPersons = async () => {
     try {
       setIsLoading(true);
@@ -50,6 +46,11 @@ export default function PersonsPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadPersons();
+  }, []);
 
   const handleDeletePerson = async () => {
     if (!deletingPerson || !deletingPerson.id) return;
@@ -82,10 +83,13 @@ export default function PersonsPage() {
   const endIndex = startIndex + itemsPerPage;
   const currentPersons = filteredPersons.slice(startIndex, endIndex);
 
-  // Reset to page 1 when filter changes
-  useEffect(() => {
+  // Reset to page 1 when filter changes — set state during render to avoid a cascading effect.
+  // See https://react.dev/reference/react/useState#storing-information-from-previous-renders
+  const [prevFilter, setPrevFilter] = useState(filter);
+  if (prevFilter !== filter) {
+    setPrevFilter(filter);
     setCurrentPage(1);
-  }, [filter]);
+  }
 
   return (
     <Flex direction="column" gap="6">

@@ -9,15 +9,6 @@ export default function CallbackPage() {
   const [error, setError] = useState<string | null>(null);
   const hasProcessed = useRef(false);
 
-  useEffect(() => {
-    // Prevent double execution in React Strict Mode
-    if (hasProcessed.current) return;
-    hasProcessed.current = true;
-
-    handleCallback();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleCallback = async () => {
     try {
       const code = searchParams.get('code');
@@ -32,13 +23,10 @@ export default function CallbackPage() {
         throw new Error('Missing code or state parameter');
       }
 
-      // Exchange code for tokens
       const tokens = await authService.exchangeCodeForTokens(code, state);
 
-      // Store tokens
       authService.storeTokens(tokens);
 
-      // Redirect to dashboard
       navigate('/', { replace: true });
 
       // Reload to update auth context
@@ -47,10 +35,18 @@ export default function CallbackPage() {
       console.error('Callback error:', err);
       setError(err instanceof Error ? err.message : 'Authentication failed');
 
-      // Redirect to login after error
       setTimeout(() => navigate('/login', { replace: true }), 3000);
     }
   };
+
+  useEffect(() => {
+    // Prevent double execution in React Strict Mode
+    if (hasProcessed.current) return;
+    hasProcessed.current = true;
+
+    handleCallback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (error) {
     return (

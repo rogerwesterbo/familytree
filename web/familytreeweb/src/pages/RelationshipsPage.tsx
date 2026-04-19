@@ -17,31 +17,11 @@ import * as api from '../services/api';
 
 export default function RelationshipsPage() {
   const [relationships, setRelationships] = useState<api.Relationship[]>([]);
-  const [filteredRelationships, setFilteredRelationships] = useState<api.Relationship[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
-  useEffect(() => {
-    loadRelationships();
-  }, []);
-
-  useEffect(() => {
-    if (filter.trim()) {
-      const filtered = relationships.filter(
-        rel =>
-          rel.type.toLowerCase().includes(filter.toLowerCase()) ||
-          rel.fromPersonId.toLowerCase().includes(filter.toLowerCase()) ||
-          rel.toPersonId.toLowerCase().includes(filter.toLowerCase())
-      );
-      setFilteredRelationships(filtered);
-    } else {
-      setFilteredRelationships(relationships);
-    }
-    setCurrentPage(1);
-  }, [filter, relationships]);
 
   const loadRelationships = async () => {
     try {
@@ -50,16 +30,37 @@ export default function RelationshipsPage() {
       const data = await api.listRelationships();
       const validData = Array.isArray(data) ? data : [];
       setRelationships(validData);
-      setFilteredRelationships(validData);
     } catch (err) {
       console.error('Failed to load relationships:', err);
       setError(err instanceof Error ? err.message : 'Failed to load relationships');
       setRelationships([]);
-      setFilteredRelationships([]);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadRelationships();
+  }, []);
+
+  // Derive filtered list from state rather than storing it separately.
+  const filteredRelationships = filter.trim()
+    ? relationships.filter(
+        rel =>
+          rel.type.toLowerCase().includes(filter.toLowerCase()) ||
+          rel.fromPersonId.toLowerCase().includes(filter.toLowerCase()) ||
+          rel.toPersonId.toLowerCase().includes(filter.toLowerCase())
+      )
+    : relationships;
+
+  // Reset to page 1 when the filter changes. Using the prev-state trick avoids
+  // an effect that just cascades a setState.
+  const [prevFilter, setPrevFilter] = useState(filter);
+  if (prevFilter !== filter) {
+    setPrevFilter(filter);
+    setCurrentPage(1);
+  }
 
   // Pagination
   const totalPages = Math.ceil(filteredRelationships.length / itemsPerPage);
