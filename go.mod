@@ -10,7 +10,7 @@ require (
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/arangodb/go-velocypack v0.0.0-20200318135517-5af53c29c67e // indirect
-	github.com/coreos/go-oidc/v3 v3.18.0
+	github.com/coreos/go-oidc/v3 v3.20.0
 	github.com/dchest/siphash v1.2.3 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
