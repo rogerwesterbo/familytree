@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Build a minimal static file server in Go
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS server-builder
+FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS server-builder
 
 WORKDIR /build
 
