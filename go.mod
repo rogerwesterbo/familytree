@@ -3,7 +3,7 @@ module github.com/rogerwesterbo/familytree
 go 1.27.1
 
 require (
-	github.com/arangodb/go-driver/v2 v2.4.0
+	github.com/arangodb/go-driver/v2 v2.4.1
 	github.com/coreos/go-oidc/v3 v3.21.0
 	github.com/spf13/viper v1.21.0
 	github.com/swaggo/http-swagger v1.3.4
